@@ -1,0 +1,39 @@
+services:
+  redis:
+    image: redis:8.8.0-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: ./hacker-news-backend
+      dockerfile: Dockerfile
+    ports:
+      - "4000:4000"
+    environment:
+      - NODE_ENV=production
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - redis
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./hacker-news-frontend
+      dockerfile: Dockerfile
+      args:
+        PUBLIC_API_URL: http://localhost:4000
+        INTERNAL_API_URL: http://backend:4000
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  redis_data:
