@@ -1,0 +1,8 @@
+[submodule "hacker-news-backend"]
+	path = hacker-news-backend
+	url = https://github.com/al-revenko/hacker-news-backend
+	branch = main
+[submodule "hacker-news-frontend"]
+	path = hacker-news-frontend
+	url = https://github.com/al-revenko/hacker-news-frontend
+	branch = main
